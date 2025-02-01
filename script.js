@@ -3,10 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const taskInput = document.getElementById("task-input");
   const taskList = document.getElementById("task-list");
 
-  // Load tasks from Local Storage
   function loadTasks() {
     const storedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    storedTasks.forEach((taskText) => addTask(taskText, false));
+    storedTasks.forEach((taskText) => addTask(taskText, false)); // 'false' prevents duplicate saving
   }
 
   function addTask(taskText, save = true) {
@@ -45,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("tasks", JSON.stringify(storedTasks));
   }
 
-  // Attach event listeners
   addButton.addEventListener("click", () => addTask(taskInput.value));
   taskInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
