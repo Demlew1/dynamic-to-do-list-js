@@ -3,53 +3,37 @@ document.addEventListener("DOMContentLoaded", function () {
   const taskInput = document.getElementById("task-input");
   const taskList = document.getElementById("task-list");
 
-  function loadTasks() {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    storedTasks.forEach((taskText) => addTask(taskText, false)); // 'false' prevents duplicate saving
-  }
+  function addTask() {
+    const taskText = taskInput.value.trim();
 
-  function addTask(taskText, save = true) {
-    taskText = taskText.trim();
     if (taskText === "") {
       alert("Please enter a task.");
       return;
     }
 
-    const listItem = document.createElement("li");
-    listItem.textContent = taskText;
+    const newTask = document.createElement("li");
+    newTask.textContent = taskText;
 
     const removeButton = document.createElement("button");
     removeButton.textContent = "Remove";
-    removeButton.className = "remove-btn";
+    removeButton.classList.add("remove-btn");
+
     removeButton.onclick = function () {
-      taskList.removeChild(listItem);
-      removeTaskFromStorage(taskText);
+      taskList.removeChild(newTask);
     };
 
-    listItem.appendChild(removeButton);
-    taskList.appendChild(listItem);
+    newTask.appendChild(removeButton);
+
+    taskList.appendChild(newTask);
 
     taskInput.value = "";
-
-    if (save) {
-      const storedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-      storedTasks.push(taskText);
-      localStorage.setItem("tasks", JSON.stringify(storedTasks));
-    }
   }
 
-  function removeTaskFromStorage(taskText) {
-    let storedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    storedTasks = storedTasks.filter((task) => task !== taskText);
-    localStorage.setItem("tasks", JSON.stringify(storedTasks));
-  }
+  addButton.addEventListener("click", addTask);
 
-  addButton.addEventListener("click", () => addTask(taskInput.value));
   taskInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
-      addTask(taskInput.value);
+      addTask(); // Add the task if the Enter key is pressed
     }
   });
-
-  loadTasks();
 });
